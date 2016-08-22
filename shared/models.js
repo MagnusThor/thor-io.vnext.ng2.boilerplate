@@ -1,8 +1,8 @@
 "use strict";
 var ChatMessage = (function () {
     function ChatMessage(message, age) {
-        this.age = age;
         this.message = message;
+        this.age = age;
     }
     return ChatMessage;
 }());

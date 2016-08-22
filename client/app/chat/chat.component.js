@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var chat_service_1 = require('../shared/services/chat.service');
-var models_1 = require('../shared/models');
+var models_1 = require('../../../shared/models');
 var ChatComponent = (function () {
     function ChatComponent(chatService) {
         this.chatService = chatService;
@@ -24,7 +24,7 @@ var ChatComponent = (function () {
         this.chatMessage = new models_1.ChatMessage("", this.chatMessage.age);
     };
     ChatComponent.prototype.setAge = function () {
-        this.chatService.setAge(this.currentChatMessage.age);
+        this.chatService.setAge(this.chatMessage.age);
     };
     ChatComponent.prototype.ngOnInit = function () {
     };

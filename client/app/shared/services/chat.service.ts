@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ConnectionProvider} from '../../providers/thor-io.connection.provider'
-import { ChatMessage } from '../models';
-
+import {ChatMessage} from '../../../../shared/models'
 
 @Injectable()
      export class ChatService {
@@ -30,7 +29,6 @@ import { ChatMessage } from '../models';
        this.chatProxy.SetProperty("age",age);
     }
 }
-
 
 
 

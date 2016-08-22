@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatService } from '../shared/services/chat.service';
-import { ChatMessage } from '../shared/models';
+import { ChatMessage } from '../../../shared/models';
 
 
 @Component({ 
@@ -27,7 +27,7 @@ export class ChatComponent implements OnInit {
         this.chatMessage = new ChatMessage("",this.chatMessage.age);
     }
     setAge(){
-        this.chatService.setAge(this.currentChatMessage.age);
+        this.chatService.setAge(this.chatMessage.age);
     }
     ngOnInit() {
    

@@ -14,7 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var thor_io_vnext_1 = require('thor-io.vnext');
-var models_1 = require('../client/app/shared/models'); //should be in root/shared
+var models_1 = require('../shared/models');
 var ChatController = (function (_super) {
     __extends(ChatController, _super);
     function ChatController(connection) {
@@ -39,7 +39,6 @@ var ChatController = (function (_super) {
         __metadata('design:returntype', void 0)
     ], ChatController.prototype, "sendMessage", null);
     ChatController = __decorate([
-        //should be in root/shared
         thor_io_vnext_1.ControllerProperties("chat", false), 
         __metadata('design:paramtypes', [thor_io_vnext_1.ThorIO.Connection])
     ], ChatController);

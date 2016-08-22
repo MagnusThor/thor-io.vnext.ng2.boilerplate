@@ -3,8 +3,7 @@ ThorIO,CanInvoke,CanSet,ControllerProperties
 
 } from 'thor-io.vnext'
 
-import { ChatMessage } from '../client/app/shared/models'; //should be in root/shared
-
+import { ChatMessage } from '../shared/models'
 
 @ControllerProperties("chat",false)
 export class ChatController extends ThorIO.Controller

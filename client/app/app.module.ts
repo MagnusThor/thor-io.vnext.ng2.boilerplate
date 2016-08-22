@@ -8,7 +8,8 @@ import { SharedModule }   from './shared/shared.module';
 
 import { ChatModule } from './chat/chat.module';
 
-import { ChatService } from './shared/services/chat.service';
+import { ChatService } from './shared/services/chat.service'
+
 import {ConnectionProvider} from './providers/thor-io.connection.provider'
 
 

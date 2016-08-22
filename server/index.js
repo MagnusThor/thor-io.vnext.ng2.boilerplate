@@ -3,7 +3,7 @@ app = express();
  
 var thorio = require("thor-io.vnext").ThorIO;
 
-var chatController = require("./rtccontrollers/chat.controller.js").ChatController;
+var chatController = require("../rtccontrollers/chat.controller.js").ChatController;
 
 var thorIO = new thorio.Engine([
     chatController
@@ -13,6 +13,7 @@ var expressWs = require("express-ws")(app);
 app.use("/", express.static("client"));
 app.use("/app", express.static("client"));
 
+app.use("/shared", express.static("shared")); 
 app.use("/lib", express.static("node_modules")); 
 
 
