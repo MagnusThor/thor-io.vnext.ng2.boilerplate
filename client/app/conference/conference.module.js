@@ -11,20 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var shared_module_1 = require('../shared/shared.module');
-var chat_component_1 = require('./chat.component');
-var chat_routing_1 = require('./chat.routing');
-var ChatModule = (function () {
-    function ChatModule() {
+var conference_component_1 = require('./conference.component');
+var conference_routing_1 = require('./conference.routing');
+var ConferenceModule = (function () {
+    function ConferenceModule() {
     }
-    ChatModule = __decorate([
+    ConferenceModule = __decorate([
         core_1.NgModule({
-            imports: [common_1.CommonModule, chat_routing_1.chat_routing, shared_module_1.SharedModule.forRoot()],
-            declarations: [chat_component_1.ChatComponent],
-            exports: [chat_component_1.ChatComponent]
+            imports: [common_1.CommonModule, conference_routing_1.conference_routing, shared_module_1.SharedModule.forRoot(),],
+            declarations: [conference_component_1.ConferenceComponent],
+            exports: [conference_component_1.ConferenceComponent]
         }), 
         __metadata('design:paramtypes', [])
-    ], ChatModule);
-    return ChatModule;
+    ], ConferenceModule);
+    return ConferenceModule;
 }());
-exports.ChatModule = ChatModule;
-//# sourceMappingURL=chat.module.js.map
+exports.ConferenceModule = ConferenceModule;
+//# sourceMappingURL=conference.module.js.map

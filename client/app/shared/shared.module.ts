@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 
-
 @NgModule({
   imports:      [ CommonModule ],
   declarations: [ ],

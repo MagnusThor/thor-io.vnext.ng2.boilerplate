@@ -1,0 +1,24 @@
+<div id="hero" [hidden]="inConference">
+    <div class="big-controlls">
+        <input [(ngModel)]="Context" type="text">
+        <button (click)="joinConference()">Join </button>
+    </div>
+</div>
+<section>
+    <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
+    <div id="fullscreen-video">
+        <video id="main-video" [hidden]="Participants.length === 0" [src]="MainVideoUrl"></video>
+    </div>
+    <div id="videos">
+        <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo($event.target.src)"></video>
+    </div>
+
+</section>
+<div id="im" [hidden]="!inConference">
+    <div id="im-messages">
+         <p *ngFor="let im of InstantMessages">{{im.text}}</p>
+    </div>
+    <input type="text" 
+    [(ngModel)]="InstantMessage.text" (keyup.enter)="sendIM()"
+    id="im-text" placeholder="Send an instant message to all ..." />
+</div>

@@ -6,7 +6,7 @@ import {ChatMessage} from '../../../../shared/models'
      export class ChatService {
 
      chatMessages: Array<ChatMessage>;
-
+  
      private chatProxy: ThorIOClient.Channel; 
   
     constructor(private connProvider:ConnectionProvider) {

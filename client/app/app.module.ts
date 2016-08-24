@@ -1,23 +1,24 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent }  from './app.component';
-
 import { app_routing } from './app.routing';
 import { SharedModule }   from './shared/shared.module';
-
-import { ChatModule } from './chat/chat.module';
-
-import { ChatService } from './shared/services/chat.service'
-
+import { ConferenceModule } from './conference/conference.module';
+import { ConferenceService } from './shared/services/conference.service'
 import {ConnectionProvider} from './providers/thor-io.connection.provider'
+import {
+  LocationStrategy,
+  HashLocationStrategy
+} from '@angular/common';
+
 
 
 @NgModule({
   imports:      [ BrowserModule,app_routing, 
-                   SharedModule.forRoot(),ChatModule ],
+                   SharedModule.forRoot(),ConferenceModule ],
+
   declarations: [ AppComponent ],
-  providers:    [ ChatService,ConnectionProvider ],
+  providers:    [ ConnectionProvider,ConferenceService,{provide: LocationStrategy, useClass: HashLocationStrategy} ],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule {

@@ -3,10 +3,10 @@ app = express();
  
 var thorio = require("thor-io.vnext").ThorIO;
 
-var chatController = require("../rtccontrollers/chat.controller.js").ChatController;
+var brokerController = require("../rtccontrollers/broker.controller.js").BrokerController;
 
 var thorIO = new thorio.Engine([
-    chatController
+    brokerController
 ]);
 
 var expressWs = require("express-ws")(app);
