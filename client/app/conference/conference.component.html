@@ -1,16 +1,21 @@
 <div id="hero" [hidden]="inConference">
-    <div class="big-controlls">
-        <input [(ngModel)]="Context" type="text">
-        <button (click)="joinConference()">Join </button>
+    <div class="launch">
+        <label for="context">What room / context do you want to join?</label>
+        <input [(ngModel)]="Context" type="text" id="context" placeholder="Enter room name..." autofocus="autofocus">
+        <button (click)="joinConference()">Join </button> 
+        <p>
+            <strong>Important:</strong><br/>  To do a local 'test' you need to open 1-n more brower windows in incognito mode.
+            
+        </p>
     </div>
 </div>
 <section>
     <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
     <div id="fullscreen-video">
-        <video id="main-video" [hidden]="Participants.length === 0" [src]="MainVideoUrl"></video>
+        <video id="main-video" [src]="MainVideoUrl"></video>
     </div>
     <div id="videos">
-        <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo($event.target.src)"></video>
+        <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo(stream)"></video>
     </div>
 
 </section>
@@ -22,3 +27,12 @@
     [(ngModel)]="InstantMessage.text" (keyup.enter)="sendIM()"
     id="im-text" placeholder="Send an instant message to all ..." />
 </div>
+
+<div style="position: absolute; top: 0; right: 0; border: 0;z-index:10000;cursor:pointer">
+<a href="https://github.com/MagnusThor/thor-io.vnext.ng2.boilerplate">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png">
+
+</a>
+</div>
+

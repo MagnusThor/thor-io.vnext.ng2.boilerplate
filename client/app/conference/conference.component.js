@@ -12,15 +12,21 @@ var core_1 = require('@angular/core');
 var conference_service_1 = require('../shared/services/conference.service');
 var models_1 = require('../../../shared/models');
 var platform_browser_1 = require('@angular/platform-browser');
-// @Pipe({
-//     name: 'sanitizeUrl'
-// })
-// class SanitizeUrl implements PipeTransform  {
-//    constructor(private _sanitizer: DomSanitizationService){}  
-//    transform(v: string) : SafeUrl {
-//       return this._sanitizer.bypassSecurityTrustUrl(v); 
-//    } 
-// } 
+var SanitizeUrl = (function () {
+    function SanitizeUrl(_sanitizer) {
+        this._sanitizer = _sanitizer;
+    }
+    SanitizeUrl.prototype.transform = function (v) {
+        return this._sanitizer.bypassSecurityTrustUrl(v);
+    };
+    SanitizeUrl = __decorate([
+        core_1.Pipe({
+            name: 'sanitizeUrl'
+        }), 
+        __metadata('design:paramtypes', [platform_browser_1.DomSanitizationService])
+    ], SanitizeUrl);
+    return SanitizeUrl;
+}());
 var ConferenceComponent = (function () {
     function ConferenceComponent(conferenceService, sanitizer) {
         var _this = this;
@@ -49,7 +55,8 @@ var ConferenceComponent = (function () {
         this.InstantMessage.text = "";
     };
     ConferenceComponent.prototype.changeMainVideo = function (participant) {
-        this.MainVideoUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(participant.stream));
+        console.log(window.URL.createObjectURL(participant.stream), participant);
+        this.MainVideoUrl = participant.url;
     };
     ConferenceComponent.prototype.joinConference = function () {
         this.conferenceService.joinConference(this.Context);
@@ -62,7 +69,9 @@ var ConferenceComponent = (function () {
             moduleId: module.id,
             selector: 'conference',
             templateUrl: 'conference.component.html',
-            pipes: []
+            pipes: [
+                SanitizeUrl
+            ]
         }), 
         __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizationService])
     ], ConferenceComponent);

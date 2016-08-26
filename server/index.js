@@ -21,5 +21,5 @@ app.ws("/", function (ws, req) {
     thorIO.addConnection(ws);
 });
 
-var port = process.env.PORT || 1337;;
+var port = process.env.PORT || 8080;
 app.listen(port);

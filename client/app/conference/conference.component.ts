@@ -4,24 +4,24 @@ import { ConferenceService } from '../shared/services/conference.service';
 import { Participant, InstantMessage, PeerConnection } from '../../../shared/models';
 import {DomSanitizationService, SafeUrl} from '@angular/platform-browser';
 
-// @Pipe({
-//     name: 'sanitizeUrl'
-// })
-// class SanitizeUrl implements PipeTransform  {
+@Pipe({
+    name: 'sanitizeUrl'
+})
+class SanitizeUrl implements PipeTransform  {
 
-//    constructor(private _sanitizer: DomSanitizationService){}  
+   constructor(private _sanitizer: DomSanitizationService){}  
 
-//    transform(v: string) : SafeUrl {
-//       return this._sanitizer.bypassSecurityTrustUrl(v); 
-//    } 
-// } 
+   transform(v: string) : SafeUrl {
+      return this._sanitizer.bypassSecurityTrustUrl(v); 
+   } 
+} 
 
 @Component({
     moduleId: module.id,
     selector: 'conference',
     templateUrl: 'conference.component.html',
     pipes: [
-        //   SanitizeUrl
+         SanitizeUrl
     ]
 
 
@@ -70,8 +70,8 @@ export class ConferenceComponent implements OnInit {
     }
     changeMainVideo(participant:Participant)
     {
-       
-        this.MainVideoUrl =  this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(participant.stream));
+        console.log(window.URL.createObjectURL(participant.stream),participant);
+        this.MainVideoUrl =  participant.url;
     }
 
     joinConference() {

@@ -1,14 +1,41 @@
-
+export class ConnectionProviderError
+{
+        timeStamp: Date;
+        error: any;
+        constructor(error:any)
+        {
+            this.timeStamp = new Date();
+            this.error = error;
+        }
+}
 
 export class ConnectionProvider {
     private factory: ThorIOClient.Factory;
+    public isConnected: boolean;
+
+    public errors: Array<ConnectionProviderError>;
+
     constructor()
     {
-        //todo: make url and controller array configurable
-        this.factory  = new ThorIOClient.Factory("ws://localhost:1337",["broker"]);
+        this.errors = new Array<ConnectionProviderError>();
+        //todo: controller array configurable
+        this.factory  = new ThorIOClient.Factory(location.origin.replace(/^http/, 'ws'),["broker"]);
         this.factory.OnOpen = (brokerProxy:ThorIOClient.Channel) =>{
+                this.isConnected = true;
                 brokerProxy.Connect();
-        }; 
+        };
+        this.factory.OnClose = () =>{
+            this.isConnected = false;
+        }
+
+        this.factory.OnError = (err:any) =>
+        {
+            this.errors.unshift(new ConnectionProviderError(err));
+            this.onError(err);
+        } 
+    }
+    onError(err:any){
+            
     }
    
     getProxy(controller:string){
