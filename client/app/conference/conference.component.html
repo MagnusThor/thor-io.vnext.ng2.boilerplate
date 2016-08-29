@@ -12,7 +12,7 @@
 <section>
     <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
     <div id="fullscreen-video">
-        <video id="main-video" [src]="MainVideoUrl"></video>
+        <video id="main-video" [src]="MainVideoUrl || 'http://ui.specbee.com/sample/bird.mp4'" autoplay="autoplay"></video>
     </div>
     <div id="videos">
         <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo(stream)"></video>

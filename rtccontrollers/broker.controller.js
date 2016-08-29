@@ -15,26 +15,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var thor_io_vnext_1 = require("thor-io.vnext");
 var models_1 = require('../shared/models');
+// Set the alias to broker, controller is not seald and send ping/pong each 7500 ms
 var BrokerController = (function (_super) {
     __extends(BrokerController, _super);
-    function BrokerController(client) {
-        _super.call(this, client);
-        this.alias = "broker";
+    function BrokerController(connection) {
+        _super.call(this, connection);
         this.Connections = new Array();
     }
-    BrokerController.prototype.createId = function () {
-        return Math.random().toString(36).substring(2);
-    };
-    ;
     BrokerController.prototype.onopen = function () {
-        this.Peer = new models_1.PeerConnection(this.createId(), this.client.id);
+        this.Peer = new models_1.PeerConnection(thor_io_vnext_1.ThorIO.Utils.newGuid(), this.connection.id);
         this.invoke(this.Peer, "contextCreated", this.alias);
     };
+    // This method deals with instant messages ( chat )
     BrokerController.prototype.instantMessage = function (instantMessage) {
         var _this = this;
         var expression = function (pre) {
             return pre.Peer.context >= _this.Peer.context;
-        };
+        }; // make sure we only send to Peer's at the came context / room
         this.invokeTo(expression, instantMessage, "instantMessage", this.alias);
     };
     BrokerController.prototype.changeContext = function (change) {
@@ -43,7 +40,7 @@ var BrokerController = (function (_super) {
     };
     BrokerController.prototype.contextSignal = function (signal) {
         var expression = function (pre) {
-            return pre.client.id === signal.recipient;
+            return pre.connection.id === signal.recipient;
         };
         this.invokeTo(expression, signal, "contextSignal", this.alias);
     };
@@ -82,8 +79,14 @@ var BrokerController = (function (_super) {
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
     ], BrokerController.prototype, "connectContext", null);
+    __decorate([
+        thor_io_vnext_1.CanInvoke(false), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', [models_1.PeerConnection]), 
+        __metadata('design:returntype', Array)
+    ], BrokerController.prototype, "getPeerConnections", null);
     BrokerController = __decorate([
-        thor_io_vnext_1.ControllerProperties("broker", false), 
+        thor_io_vnext_1.ControllerProperties("broker", false, 7500), 
         __metadata('design:paramtypes', [thor_io_vnext_1.ThorIO.Connection])
     ], BrokerController);
     return BrokerController;

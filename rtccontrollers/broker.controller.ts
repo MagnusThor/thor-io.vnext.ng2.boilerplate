@@ -5,32 +5,28 @@ import {
 import {PeerConnection,Signal,InstantMessage} from '../shared/models'
 
 
-@ControllerProperties("broker",false)
+// Set the alias to broker, controller is not seald and send ping/pong each 7500 ms
+@ControllerProperties("broker",false,7500)
 export class BrokerController  extends ThorIO.Controller
 {
     public Connections:Array<PeerConnection>;
     public Peer:PeerConnection;
-    public localPeerId:string;
 
-    private createId():string{
-        return Math.random().toString(36).substring(2);
-    };
-
-    constructor(client:ThorIO.Connection){
-        super(client);
-        this.alias = "broker";
+    constructor(connection:ThorIO.Connection){
+        super(connection);
         this.Connections = new Array<PeerConnection>();    
     }
     onopen(){
-        this.Peer = new PeerConnection(this.createId(),this.client.id);
+        this.Peer = new PeerConnection(ThorIO.Utils.newGuid(),this.connection.id);
         this.invoke(this.Peer,"contextCreated",this.alias);
     }
 
+    // This method deals with instant messages ( chat )
     @CanInvoke(true)
     instantMessage(instantMessage:InstantMessage) {
         var expression = (pre: BrokerController) => {
             return pre.Peer.context >= this.Peer.context
-        };
+        }; // make sure we only send to Peer's at the came context / room
         this.invokeTo(expression, instantMessage, "instantMessage", this.alias);
     }
   
@@ -42,7 +38,7 @@ export class BrokerController  extends ThorIO.Controller
     @CanInvoke(true)
     contextSignal(signal:Signal){
             let expression = (pre: BrokerController) => {
-            return pre.client.id === signal.recipient;
+            return pre.connection.id === signal.recipient;
         };
         this.invokeTo(expression,signal,"contextSignal",this.alias);
     }
@@ -51,8 +47,8 @@ export class BrokerController  extends ThorIO.Controller
         let connections = this.getPeerConnections(this.Peer).map( (p:BrokerController) => {return p.Peer });
          this.invoke(connections,"connectTo",this.alias);
     }
- 
-    getPeerConnections(peerConnetion:PeerConnection):Array<BrokerController>{
+    @CanInvoke(false)
+    private getPeerConnections(peerConnetion:PeerConnection):Array<BrokerController>{
             let match = this.findOn(this.alias,(pre:BrokerController) => {
                     return pre.Peer.context === this.Peer.context && pre.Peer.peerId !== peerConnetion.peerId
                 });

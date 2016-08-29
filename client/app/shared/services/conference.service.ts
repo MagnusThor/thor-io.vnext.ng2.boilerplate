@@ -80,6 +80,7 @@ export class ConferenceService {
         var match = this.RemoteStreams.find((pre: Participant) => {
             return pre.id === streamId;
         });
+      
         return match;
     }
 
