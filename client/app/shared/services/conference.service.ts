@@ -6,11 +6,11 @@ import {DomSanitizationService, SafeUrl} from '@angular/platform-browser';
 @Injectable()
 export class ConferenceService {
 
-    private rtc: ThorIOClient.WebRTC;
+    private rtc: ThorIO.WebRTC;
 
     public RemoteStreams: Array<Participant>;
     public InstantMessages: Array<InstantMessage>;
-    private proxy: ThorIOClient.Channel;
+    private proxy: ThorIO.Proxy;
 
     public context: string;
 
@@ -30,9 +30,9 @@ export class ConferenceService {
             ]
         };
 
-        this.rtc = new ThorIOClient.WebRTC(this.proxy, config);
+        this.rtc = new ThorIO.WebRTC(this.proxy, config);
 
-        this.rtc.onRemoteStream = (stream: MediaStream, connection: ThorIOClient.Connection) => {
+        this.rtc.onRemoteStream = (stream: MediaStream, connection: ThorIO.ContextConnection) => {
 
             let safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             let participant = new Participant(stream,

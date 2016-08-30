@@ -10,7 +10,7 @@ export class ConnectionProviderError
 }
 
 export class ConnectionProvider {
-    private factory: ThorIOClient.Factory;
+    private factory: ThorIO.Factory;
     public isConnected: boolean;
 
     public errors: Array<ConnectionProviderError>;
@@ -19,8 +19,8 @@ export class ConnectionProvider {
     {
         this.errors = new Array<ConnectionProviderError>();
         //todo: controller array configurable
-        this.factory  = new ThorIOClient.Factory(location.origin.replace(/^http/, 'ws'),["broker"]);
-        this.factory.OnOpen = (brokerProxy:ThorIOClient.Channel) =>{
+        this.factory  = new ThorIO.Factory(location.origin.replace(/^http/, 'ws'),["broker"]);
+        this.factory.OnOpen = (brokerProxy:ThorIO.Proxy) =>{
                 this.isConnected = true;
                 brokerProxy.Connect();
         };
@@ -39,6 +39,6 @@ export class ConnectionProvider {
     }
    
     getProxy(controller:string){
-        return this.factory.GetChannel(controller);
+        return this.factory.GetProxy(controller);
     }
 }   

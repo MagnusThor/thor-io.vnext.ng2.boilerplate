@@ -12,7 +12,7 @@ var ConnectionProvider = (function () {
         var _this = this;
         this.errors = new Array();
         //todo: controller array configurable
-        this.factory = new ThorIOClient.Factory(location.origin.replace(/^http/, 'ws'), ["broker"]);
+        this.factory = new ThorIO.Factory(location.origin.replace(/^http/, 'ws'), ["broker"]);
         this.factory.OnOpen = function (brokerProxy) {
             _this.isConnected = true;
             brokerProxy.Connect();
@@ -28,7 +28,7 @@ var ConnectionProvider = (function () {
     ConnectionProvider.prototype.onError = function (err) {
     };
     ConnectionProvider.prototype.getProxy = function (controller) {
-        return this.factory.GetChannel(controller);
+        return this.factory.GetProxy(controller);
     };
     return ConnectionProvider;
 }());

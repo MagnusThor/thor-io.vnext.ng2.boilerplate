@@ -27,7 +27,7 @@ var ConferenceService = (function () {
                 }
             ]
         };
-        this.rtc = new ThorIOClient.WebRTC(this.proxy, config);
+        this.rtc = new ThorIO.WebRTC(this.proxy, config);
         this.rtc.onRemoteStream = function (stream, connection) {
             var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             var participant = new models_1.Participant(stream, safeUrl, stream.id);
