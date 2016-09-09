@@ -21,34 +21,35 @@ var ConferenceService = (function () {
         this.RemoteStreams = new Array();
         this.InstantMessages = new Array();
         var config = {
+            iceTransports: 'all',
             iceServers: [
                 {
-                    url: "stun:stun.l.google.com:19302"
+                    urls: "stun:stun.l.google.com:19302"
                 }
             ]
         };
-        this.rtc = new ThorIO.WebRTC(this.proxy, config);
-        this.rtc.onRemoteStream = function (stream, connection) {
+        // add your own STUN / turn servers ..
+        this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
+        this.rtc.onRemoteStream = function (stream) {
             var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             var participant = new models_1.Participant(stream, safeUrl, stream.id);
             _this.onParticipant(participant);
             _this.RemoteStreams.push(participant);
         };
-        this.rtc.remoteStreamlost = function (streamId, peerId) {
+        this.rtc.onRemoteStreamlost = function (streamId, peerId) {
             var remoteStream = _this.findMediaStream(streamId);
             _this.RemoteStreams.splice(_this.RemoteStreams.indexOf(remoteStream), 1);
         };
-        this.proxy.On("contextChanged", function (context) {
+        this.rtc.onContextChanged = function (context) {
             _this.context = context;
-            _this.proxy.Invoke("connectContext", {});
-        });
-        this.proxy.On("connectTo", function (peers) {
+            _this.rtc.connectContext();
+        };
+        this.rtc.onConnectTo = function (peers) {
             _this.rtc.connect(peers);
-        });
-        this.proxy.On("contextCreated", function (peerConnection) {
-            _this.rtc.localPeerId = peerConnection.peerId;
-            _this.context = peerConnection.context;
-        });
+        };
+        this.rtc.onContextCreated = function (p) {
+            // do op 
+        };
         this.proxy.On("instantMessage", function (message) {
             _this.InstantMessages.unshift(message);
         });

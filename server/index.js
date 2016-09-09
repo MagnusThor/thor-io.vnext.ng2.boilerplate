@@ -2,11 +2,13 @@ var express = require("express");
 
 app = express();
  
-var thorio = require("thor-io.vnext").ThorIO; //  better maybe export ThorIO?
+var thorio = require("thor-io.vnext").ThorIO;
+
+
 
 var thorIO = new thorio.Engine(
     [
-    require("../rtccontrollers/broker.controller.js").BrokerController
+    thorio.Controllers.BrokerController
     ]
 ); // would be nice if we could find ThorIO.Controllers by enum the file system?
 
@@ -18,8 +20,8 @@ app.use("/app", express.static("client"));
 app.use("/shared", express.static("shared")); 
 app.use("/lib", express.static("node_modules")); 
 
-app.ws("/", function (ws, req) {
-    thorIO.addConnection(ws);
+app.ws("/", function (ws, req) {    
+       thorIO.addConnection(ws);
 });
 
 var port = process.env.PORT || 8080;
