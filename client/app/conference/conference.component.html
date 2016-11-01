@@ -6,7 +6,10 @@
     </div>
 </div>
 <section>
+    <div id="local">
+   
     <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
+    </div>
     <div id="fullscreen-video">
         <video id="main-video" [src]="MainVideoUrl || 'http://ui.specbee.com/sample/bird.mp4'" autoplay="autoplay"></video>
     </div>
@@ -17,7 +20,9 @@
 </section>
 <div id="im" [hidden]="!inConference">
     <div id="im-messages">
-         <p *ngFor="let im of InstantMessages">{{im.text}}</p>
+         <p *ngFor="let im of InstantMessages">
+             <time>{{im.timeStamp | date:'hh:MM'}}</time><span>{{im.text}}</span>
+             </p>
     </div>
     <input type="text" 
     [(ngModel)]="InstantMessage.text" (keyup.enter)="sendIM()"

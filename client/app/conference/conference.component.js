@@ -34,7 +34,6 @@ var ConferenceComponent = (function () {
         this.sanitizer = sanitizer;
         this.InstantMessages = new Array();
         this.InstantMessage = new models_1.InstantMessage();
-        this.InstantMessage = new models_1.InstantMessage();
         this.Participants = new Array();
         navigator.getUserMedia({ audio: false, video: true }, function (stream) {
             _this.LocalStreamUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
@@ -55,7 +54,6 @@ var ConferenceComponent = (function () {
         this.InstantMessage.text = "";
     };
     ConferenceComponent.prototype.changeMainVideo = function (participant) {
-        console.log(window.URL.createObjectURL(participant.stream), participant);
         this.MainVideoUrl = participant.url;
     };
     ConferenceComponent.prototype.joinConference = function () {

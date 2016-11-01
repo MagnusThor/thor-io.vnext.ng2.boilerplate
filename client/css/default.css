@@ -68,6 +68,8 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
+
+
 #local {
     position: absolute;
     right: 20px;
@@ -87,8 +89,7 @@ html {
     display: inline;
     margin-right: 10px;
     border: 1px solid #39403D;
-    width: 120px;
-    height: auto;
+    max-width: 120px;
 }
 
 .hide {
@@ -122,6 +123,10 @@ section {
     height: 135px;
     overflow: auto;
     padding: 10px;
+}
+
+#im-messages time {
+        margin-right: 20px;
 }
 
 

@@ -12,7 +12,7 @@ var ConnectionProvider = (function () {
         var _this = this;
         this.errors = new Array();
         //todo: controller array configurable
-        this.factory = new ThorIO.Client.Factory(location.origin.replace(/^http/, 'ws'), ["broker"]);
+        this.factory = new ThorIO.Client.Factory(location.origin.replace(/^http/, 'ws'), ["contextBroker"]);
         this.factory.OnOpen = function (brokerProxy) {
             _this.isConnected = true;
             brokerProxy.Connect();

@@ -21,7 +21,7 @@ app.use("/shared", express.static("shared"));
 app.use("/lib", express.static("node_modules")); 
 
 app.ws("/", function (ws, req) {    
-       thorIO.addConnection(ws);
+       thorIO.addWebSocket(ws,req);
 });
 
 var port = process.env.PORT || 8080;

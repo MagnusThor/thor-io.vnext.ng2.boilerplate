@@ -24,6 +24,7 @@ export class Participant{
 export class InstantMessage
 {
     text: string;
+    timeStamp: Date;
 }
 
 export class PeerConnection {

@@ -17,7 +17,7 @@ var ConferenceService = (function () {
         var _this = this;
         this.connProvider = connProvider;
         this.sanitizer = sanitizer;
-        this.proxy = connProvider.getProxy("broker");
+        this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array();
         this.InstantMessages = new Array();
         var config = {
@@ -30,25 +30,19 @@ var ConferenceService = (function () {
         };
         // add your own STUN / turn servers ..
         this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
-        this.rtc.onRemoteStream = function (stream) {
+        this.rtc.OnRemoteStream = function (stream) {
             var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             var participant = new models_1.Participant(stream, safeUrl, stream.id);
             _this.onParticipant(participant);
             _this.RemoteStreams.push(participant);
         };
-        this.rtc.onRemoteStreamlost = function (streamId, peerId) {
+        this.rtc.OnRemoteStreamlost = function (streamId, peerId) {
             var remoteStream = _this.findMediaStream(streamId);
             _this.RemoteStreams.splice(_this.RemoteStreams.indexOf(remoteStream), 1);
         };
-        this.rtc.onContextChanged = function (context) {
+        this.rtc.OnContextChanged = function (context) {
             _this.context = context;
-            _this.rtc.connectContext();
-        };
-        this.rtc.onConnectTo = function (peers) {
-            _this.rtc.connect(peers);
-        };
-        this.rtc.onContextCreated = function (p) {
-            // do op 
+            _this.rtc.ConnectContext();
         };
         this.proxy.On("instantMessage", function (message) {
             _this.InstantMessages.unshift(message);
@@ -66,13 +60,14 @@ var ConferenceService = (function () {
         return match;
     };
     ConferenceService.prototype.addLocalMediaStream = function (stream) {
-        this.rtc.addLocalStream(stream);
+        this.rtc.AddLocalStream(stream);
     };
     ;
     ConferenceService.prototype.connectContext = function (context) {
         this.proxy.Invoke("connectContext", { context: context });
     };
     ConferenceService.prototype.sendInstantMessage = function (instantMessage) {
+        instantMessage.timeStamp = new Date();
         this.proxy.Invoke("instantMessage", instantMessage);
     };
     ConferenceService = __decorate([

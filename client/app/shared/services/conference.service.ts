@@ -16,7 +16,7 @@ export class ConferenceService {
 
     constructor(private connProvider: ConnectionProvider, private sanitizer: DomSanitizationService) {
 
-        this.proxy = connProvider.getProxy("broker");
+        this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array<Participant>();
         this.InstantMessages = new Array<InstantMessage>();
 
@@ -31,7 +31,7 @@ export class ConferenceService {
         // add your own STUN / turn servers ..
 
         this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
-        this.rtc.onRemoteStream = (stream: MediaStream) => {
+        this.rtc.OnRemoteStream = (stream: MediaStream) => {
             let safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             let participant = new Participant(stream,
                 safeUrl,
@@ -40,21 +40,15 @@ export class ConferenceService {
             this.onParticipant(participant);
             this.RemoteStreams.push(participant);
         };
-        this.rtc.onRemoteStreamlost = (streamId, peerId) => {
+        this.rtc.OnRemoteStreamlost = (streamId, peerId) => {
             var remoteStream = this.findMediaStream(streamId);
             this.RemoteStreams.splice(this.RemoteStreams.indexOf(remoteStream), 1);
         };
-         this.rtc.onContextChanged =  (context: string) => {
+         this.rtc.OnContextChanged =  (context: string) => {
              this.context = context;
-             this.rtc.connectContext();
+             this.rtc.ConnectContext();
         };
-        this.rtc.onConnectTo =  (peers: Array<PeerConnection>) => {
-            this.rtc.connect(peers);
-        };
-        this.rtc.onContextCreated = (p:PeerConnection) =>
-        {
-          // do op 
-        }
+        
         this.proxy.On("instantMessage", (message:InstantMessage) =>{
                     this.InstantMessages.unshift(message);
         });
@@ -78,7 +72,7 @@ export class ConferenceService {
     }
 
     addLocalMediaStream(stream: MediaStream) {
-        this.rtc.addLocalStream(stream);
+        this.rtc.AddLocalStream(stream);
     };
 
     connectContext(context: string) {
@@ -86,6 +80,7 @@ export class ConferenceService {
     }
 
     sendInstantMessage(instantMessage: InstantMessage) {
+        instantMessage.timeStamp = new Date();
         this.proxy.Invoke("instantMessage", instantMessage);
     }
 }

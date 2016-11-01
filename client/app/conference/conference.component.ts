@@ -43,7 +43,6 @@ export class ConferenceComponent implements OnInit {
     constructor(private conferenceService: ConferenceService, private sanitizer: DomSanitizationService) {
         this.InstantMessages = new Array<InstantMessage>();
         this.InstantMessage = new InstantMessage();
-        this.InstantMessage = new InstantMessage();
                 
         this.Participants = new Array<Participant>();
         navigator.getUserMedia({ audio: false, video: true }, (stream: MediaStream) => {
@@ -70,7 +69,6 @@ export class ConferenceComponent implements OnInit {
     }
     changeMainVideo(participant:Participant)
     {
-        console.log(window.URL.createObjectURL(participant.stream),participant);
         this.MainVideoUrl =  participant.url;
     }
 
