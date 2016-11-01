@@ -72,6 +72,7 @@ export class ConferenceService {
     }
 
     addLocalMediaStream(stream: MediaStream) {
+      
         this.rtc.AddLocalStream(stream);
     };
 

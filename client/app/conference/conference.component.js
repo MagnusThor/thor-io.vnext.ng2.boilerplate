@@ -35,11 +35,12 @@ var ConferenceComponent = (function () {
         this.InstantMessages = new Array();
         this.InstantMessage = new models_1.InstantMessage();
         this.Participants = new Array();
-        navigator.getUserMedia({ audio: false, video: true }, function (stream) {
+        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
             _this.LocalStreamUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-            conferenceService.addLocalMediaStream(stream);
+            setTimeout(function () {
+                conferenceService.addLocalMediaStream(stream);
+            }, 1000);
         }, function (err) {
-            // deal with the gum error
             console.log("getUserMedia error", err);
         });
         this.Participants = conferenceService.RemoteStreams;
@@ -47,7 +48,7 @@ var ConferenceComponent = (function () {
         conferenceService.onParticipant = function (p) {
             _this.MainVideoUrl = p.url;
         };
-        this.Context = "foo";
+        this.Context = "monkey";
     }
     ConferenceComponent.prototype.sendIM = function () {
         this.conferenceService.sendInstantMessage(this.InstantMessage);

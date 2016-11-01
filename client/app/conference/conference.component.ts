@@ -45,11 +45,16 @@ export class ConferenceComponent implements OnInit {
         this.InstantMessage = new InstantMessage();
                 
         this.Participants = new Array<Participant>();
-        navigator.getUserMedia({ audio: false, video: true }, (stream: MediaStream) => {
+
+        navigator.getUserMedia({ audio: true, video: true }, (stream: MediaStream) => {
             this.LocalStreamUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-            conferenceService.addLocalMediaStream(stream);
+            setTimeout( () => {
+                conferenceService.addLocalMediaStream(stream);
+            },1000);
+          
+
         }, (err) => {
-            // deal with the gum error
+           
             console.log("getUserMedia error", err);
         })
 
@@ -59,7 +64,7 @@ export class ConferenceComponent implements OnInit {
         conferenceService.onParticipant = (p: Participant) => {
             this.MainVideoUrl = p.url;
         }
-        this.Context = "foo"
+        this.Context = "monkey"
     }
     sendIM()
     {
