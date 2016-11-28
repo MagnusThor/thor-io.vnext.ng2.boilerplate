@@ -17,6 +17,8 @@ Many thanks to Dan for great boiler, and sorry of i messed it up :-)
 
 The demo ( code in this repo) is deployed at Heroku at the follwing url - https://webrtc-lab.herokuapp.com/
 
+A short video (non edited) can be found here - https://www.youtube.com/watch?v=X6mAuMjsnSg
+
 ## Info
 
 Look at /server/index.js and you will get a clue how to set-up thor-io, as well as in /rtccontroller folder you will find
