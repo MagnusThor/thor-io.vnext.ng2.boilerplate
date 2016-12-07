@@ -25,7 +25,6 @@ var ConferenceService = (function () {
         this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array();
         this.InstantMessages = new Array();
-        // let a = new RequestOptionArgs();
         var config = {
             iceTransports: 'all',
             iceServers: [
@@ -59,8 +58,9 @@ var ConferenceService = (function () {
     ConferenceService.prototype.onParticipant = function (participant) {
     };
     ConferenceService.prototype.getSlug = function () {
-        return this.http.get("http://www.setgetgo.com/randomword/get.php?len=6").map(function (res) {
-            return res.text().toLowerCase();
+        return this.http.get("/data/slugs.json").map(function (res) {
+            var slugs = res.json();
+            return slugs[Math.floor(Math.random() * slugs.length)].toString().toLowerCase();
         });
     };
     ConferenceService.prototype.joinConference = function (context) {

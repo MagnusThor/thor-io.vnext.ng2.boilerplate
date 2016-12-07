@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ConnectionProvider} from '../../providers/thor-io.connection.provider'
 import {Signal, PeerConnection, InstantMessage, Participant} from '../../../../shared/models'
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Jsonp,Headers,RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
@@ -11,6 +11,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ConferenceService {
+
 
     private rtc: ThorIO.Client.WebRTC;
 
@@ -25,15 +26,6 @@ export class ConferenceService {
         this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array<Participant>();
         this.InstantMessages = new Array<InstantMessage>();
-
-      
-
-        // let a = new RequestOptionArgs();
-
-      
-     
-
-
         let config = {
             iceTransports: 'all',
             iceServers: [
@@ -78,8 +70,12 @@ export class ConferenceService {
     }
 
     getSlug():Observable<string>{
-        return this.http.get("http://www.setgetgo.com/randomword/get.php?len=6").map( (res:Response) => {
-               return res.text().toLowerCase();
+       
+        return this.http.get("/data/slugs.json"
+       
+        ).map( (res:Response) => {
+               let slugs = res.json();
+               return slugs[Math.floor(Math.random() * slugs.length) ].toString().toLowerCase();
         });
     }
 
