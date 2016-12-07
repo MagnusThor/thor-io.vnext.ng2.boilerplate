@@ -16,6 +16,7 @@ var shared_module_1 = require('./shared/shared.module');
 var conference_module_1 = require('./conference/conference.module');
 var conference_service_1 = require('./shared/services/conference.service');
 var thor_io_connection_provider_1 = require('./providers/thor-io.connection.provider');
+var http_1 = require('@angular/http');
 var common_1 = require('@angular/common');
 var AppModule = (function () {
     function AppModule() {
@@ -23,7 +24,7 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, app_routing_1.app_routing,
-                shared_module_1.SharedModule.forRoot(), conference_module_1.ConferenceModule],
+                shared_module_1.SharedModule.forRoot(), conference_module_1.ConferenceModule, http_1.HttpModule, http_1.JsonpModule],
             declarations: [app_component_1.AppComponent],
             providers: [thor_io_connection_provider_1.ConnectionProvider, conference_service_1.ConferenceService, { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
             bootstrap: [app_component_1.AppComponent]

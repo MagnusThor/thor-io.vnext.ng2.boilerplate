@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import {ConnectionProvider} from '../../providers/thor-io.connection.provider'
 import {Signal, PeerConnection, InstantMessage, Participant} from '../../../../shared/models'
-import {DomSanitizationService, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import { Observer } from 'rxjs/Observer';
+import 'rxjs/add/operator/map'; 
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ConferenceService {
@@ -14,11 +20,19 @@ export class ConferenceService {
 
     public context: string;
 
-    constructor(private connProvider: ConnectionProvider, private sanitizer: DomSanitizationService) {
+    constructor(private connProvider: ConnectionProvider, private sanitizer: DomSanitizer,private http:Http) {
 
         this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array<Participant>();
         this.InstantMessages = new Array<InstantMessage>();
+
+      
+
+        // let a = new RequestOptionArgs();
+
+      
+     
+
 
         let config = {
             iceTransports: 'all',
@@ -31,6 +45,11 @@ export class ConferenceService {
         // add your own STUN / turn servers ..
 
         this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
+
+        // limit video and audio
+
+        this.rtc.setBandwithConstraints(500,50);
+
         this.rtc.OnRemoteStream = (stream: MediaStream) => {
             let safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             let participant = new Participant(stream,
@@ -56,7 +75,12 @@ export class ConferenceService {
 
 
     public onParticipant(participant: Participant) {
+    }
 
+    getSlug():Observable<string>{
+        return this.http.get("http://www.setgetgo.com/randomword/get.php?len=6").map( (res:Response) => {
+               return res.text().toLowerCase();
+        });
     }
 
     joinConference(context: string) {

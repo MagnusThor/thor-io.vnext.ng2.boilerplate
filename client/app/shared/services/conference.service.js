@@ -12,14 +12,20 @@ var core_1 = require('@angular/core');
 var thor_io_connection_provider_1 = require('../../providers/thor-io.connection.provider');
 var models_1 = require('../../../../shared/models');
 var platform_browser_1 = require('@angular/platform-browser');
+var http_1 = require('@angular/http');
+require('rxjs/add/observable/throw');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/catch');
 var ConferenceService = (function () {
-    function ConferenceService(connProvider, sanitizer) {
+    function ConferenceService(connProvider, sanitizer, http) {
         var _this = this;
         this.connProvider = connProvider;
         this.sanitizer = sanitizer;
+        this.http = http;
         this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array();
         this.InstantMessages = new Array();
+        // let a = new RequestOptionArgs();
         var config = {
             iceTransports: 'all',
             iceServers: [
@@ -30,6 +36,8 @@ var ConferenceService = (function () {
         };
         // add your own STUN / turn servers ..
         this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
+        // limit video and audio
+        this.rtc.setBandwithConstraints(500, 50);
         this.rtc.OnRemoteStream = function (stream) {
             var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             var participant = new models_1.Participant(stream, safeUrl, stream.id);
@@ -49,6 +57,11 @@ var ConferenceService = (function () {
         });
     }
     ConferenceService.prototype.onParticipant = function (participant) {
+    };
+    ConferenceService.prototype.getSlug = function () {
+        return this.http.get("http://www.setgetgo.com/randomword/get.php?len=6").map(function (res) {
+            return res.text().toLowerCase();
+        });
     };
     ConferenceService.prototype.joinConference = function (context) {
         this.proxy.Invoke("changeContext", { context: context });
@@ -72,7 +85,7 @@ var ConferenceService = (function () {
     };
     ConferenceService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [thor_io_connection_provider_1.ConnectionProvider, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [thor_io_connection_provider_1.ConnectionProvider, platform_browser_1.DomSanitizer, http_1.Http])
     ], ConferenceService);
     return ConferenceService;
 }());

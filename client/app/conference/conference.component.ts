@@ -2,14 +2,15 @@ import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConferenceService } from '../shared/services/conference.service';
 import { Participant, InstantMessage, PeerConnection } from '../../../shared/models';
-import {DomSanitizationService, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+
 
 @Pipe({
     name: 'sanitizeUrl'
 })
 class SanitizeUrl implements PipeTransform  {
 
-   constructor(private _sanitizer: DomSanitizationService){}  
+   constructor(private _sanitizer: DomSanitizer){}  
 
    transform(v: string) : SafeUrl {
       return this._sanitizer.bypassSecurityTrustUrl(v); 
@@ -20,9 +21,7 @@ class SanitizeUrl implements PipeTransform  {
     moduleId: module.id,
     selector: 'conference',
     templateUrl: 'conference.component.html',
-    pipes: [
-         SanitizeUrl
-    ]
+
 
 
 })
@@ -40,10 +39,12 @@ export class ConferenceComponent implements OnInit {
 
     public Context: string; //  context can be condidered as a "room"
 
-    constructor(private conferenceService: ConferenceService, private sanitizer: DomSanitizationService) {
+    constructor(private conferenceService: ConferenceService, private sanitizer: DomSanitizer) {
         this.InstantMessages = new Array<InstantMessage>();
         this.InstantMessage = new InstantMessage();
                 
+    
+
         this.Participants = new Array<Participant>();
 
         navigator.getUserMedia({ audio: true, video: true }, (stream: MediaStream) => {
@@ -64,7 +65,9 @@ export class ConferenceComponent implements OnInit {
         conferenceService.onParticipant = (p: Participant) => {
             this.MainVideoUrl = p.url;
         }
-        this.Context = "monkey"
+        conferenceService.getSlug().subscribe( (a:string) => {
+            this.Context = a;
+        });
     }
     sendIM()
     {

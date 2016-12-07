@@ -23,7 +23,7 @@ var SanitizeUrl = (function () {
         core_1.Pipe({
             name: 'sanitizeUrl'
         }), 
-        __metadata('design:paramtypes', [platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [platform_browser_1.DomSanitizer])
     ], SanitizeUrl);
     return SanitizeUrl;
 }());
@@ -48,7 +48,9 @@ var ConferenceComponent = (function () {
         conferenceService.onParticipant = function (p) {
             _this.MainVideoUrl = p.url;
         };
-        this.Context = "monkey";
+        conferenceService.getSlug().subscribe(function (a) {
+            _this.Context = a;
+        });
     }
     ConferenceComponent.prototype.sendIM = function () {
         this.conferenceService.sendInstantMessage(this.InstantMessage);
@@ -68,11 +70,8 @@ var ConferenceComponent = (function () {
             moduleId: module.id,
             selector: 'conference',
             templateUrl: 'conference.component.html',
-            pipes: [
-                SanitizeUrl
-            ]
         }), 
-        __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizer])
     ], ConferenceComponent);
     return ConferenceComponent;
 }());

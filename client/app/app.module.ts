@@ -6,6 +6,8 @@ import { SharedModule }   from './shared/shared.module';
 import { ConferenceModule } from './conference/conference.module';
 import { ConferenceService } from './shared/services/conference.service'
 import {ConnectionProvider} from './providers/thor-io.connection.provider'
+import { HttpModule,JsonpModule } from '@angular/http';
+
 import {
   LocationStrategy,
   HashLocationStrategy
@@ -15,7 +17,7 @@ import {
 
 @NgModule({
   imports:      [ BrowserModule,app_routing, 
-                   SharedModule.forRoot(),ConferenceModule ],
+                   SharedModule.forRoot(),ConferenceModule,HttpModule,JsonpModule ],
 
   declarations: [ AppComponent ],
   providers:    [ ConnectionProvider,ConferenceService,{provide: LocationStrategy, useClass: HashLocationStrategy} ],
