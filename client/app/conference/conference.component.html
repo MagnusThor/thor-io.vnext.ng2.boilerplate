@@ -1,9 +1,15 @@
+
+<button id="shareUrl" [hidden]="!inConference" ngIIclipboard [cbContent]="ContextUrl">
+    <i class="fa fa-link fa-2x"></i>
+    
+</button>
+
 <div id="hero" [hidden]="inConference">
     <div class="launch">
         <label for="context">Enter a room to start talking:</label>
         <input [(ngModel)]="Context" type="text" id="context" placeholder="Enter room name..."  
-        autofocus="autofocus">
-        <button (click)="joinConference()">START </button> 
+        autofocus="autofocus" [disabled]="actionButtonCaption == 'JOIN'">
+        <button (click)="joinConference()">{{actionButtonCaption}} </button> 
     </div>
 </div>
 <section>

@@ -1,3 +1,10 @@
+#shareUrl{
+    z-index: 1001;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
 #hero {
     position: absolute;
     z-index: 110;
@@ -83,6 +90,7 @@ html {
 #videos {
     position: absolute;
     z-index: 100;
+    left:100px;
 }
 
 #videos video {

@@ -4,8 +4,6 @@ app = express();
  
 var thorio = require("thor-io.vnext").ThorIO;
 
-
-
 var thorIO = new thorio.Engine(
     [
     thorio.Controllers.BrokerController

@@ -9,23 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var shared_module_1 = require('../shared/shared.module');
-var conference_component_1 = require('./conference.component');
-var clipboard_module_1 = require('../directives/clipboard.module');
-var conference_routing_1 = require('./conference.routing');
-var ConferenceModule = (function () {
-    function ConferenceModule() {
+var clipboard_directive_1 = require('./clipboard.directive');
+var ClipboardModule = (function () {
+    function ClipboardModule() {
     }
-    ConferenceModule = __decorate([
+    ClipboardModule = __decorate([
         core_1.NgModule({
-            imports: [common_1.CommonModule, conference_routing_1.conference_routing, shared_module_1.SharedModule.forRoot(), clipboard_module_1.ClipboardModule],
-            declarations: [conference_component_1.ConferenceComponent],
-            exports: [conference_component_1.ConferenceComponent]
+            declarations: [clipboard_directive_1.ClipboardDirective],
+            exports: [clipboard_directive_1.ClipboardDirective]
         }), 
         __metadata('design:paramtypes', [])
-    ], ConferenceModule);
-    return ConferenceModule;
+    ], ClipboardModule);
+    return ClipboardModule;
 }());
-exports.ConferenceModule = ConferenceModule;
-//# sourceMappingURL=conference.module.js.map
+exports.ClipboardModule = ClipboardModule;
+//# sourceMappingURL=clipboard.module.js.map

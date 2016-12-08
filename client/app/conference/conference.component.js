@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var conference_service_1 = require('../shared/services/conference.service');
 var models_1 = require('../../../shared/models');
 var platform_browser_1 = require('@angular/platform-browser');
@@ -28,28 +29,32 @@ var SanitizeUrl = (function () {
     return SanitizeUrl;
 }());
 var ConferenceComponent = (function () {
-    function ConferenceComponent(conferenceService, sanitizer) {
+    function ConferenceComponent(conferenceService, sanitizer, route) {
         var _this = this;
         this.conferenceService = conferenceService;
         this.sanitizer = sanitizer;
+        this.route = route;
+        this.actionButtonCaption = "START";
         this.InstantMessages = new Array();
         this.InstantMessage = new models_1.InstantMessage();
-        this.Participants = new Array();
-        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
-            _this.LocalStreamUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-            setTimeout(function () {
-                conferenceService.addLocalMediaStream(stream);
-            }, 1000);
-        }, function (err) {
-            console.log("getUserMedia error", err);
-        });
-        this.Participants = conferenceService.RemoteStreams;
-        this.InstantMessages = conferenceService.InstantMessages;
-        conferenceService.onParticipant = function (p) {
-            _this.MainVideoUrl = p.url;
-        };
-        conferenceService.getSlug().subscribe(function (a) {
-            _this.Context = a;
+        this.route.params.subscribe(function (params) {
+            if (!params.hasOwnProperty("slug")) {
+                _this.conferenceService.getSlug().subscribe(function (randomSlug) {
+                    _this.Context = randomSlug;
+                    _this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug;
+                });
+            }
+            else {
+                _this.Context = params["slug"].toString();
+                _this.actionButtonCaption = "JOIN";
+                _this.ContextUrl = "https://" + location.host + "/#/join/" + _this.Context;
+            }
+            _this.Participants = new Array();
+            _this.Participants = _this.conferenceService.RemoteStreams;
+            _this.InstantMessages = _this.conferenceService.InstantMessages;
+            _this.conferenceService.onParticipant = function (participant) {
+                _this.MainVideoUrl = participant.url;
+            };
         });
     }
     ConferenceComponent.prototype.sendIM = function () {
@@ -60,10 +65,16 @@ var ConferenceComponent = (function () {
         this.MainVideoUrl = participant.url;
     };
     ConferenceComponent.prototype.joinConference = function () {
-        this.conferenceService.joinConference(this.Context);
-        this.inConference = true;
-    };
-    ConferenceComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
+            _this.conferenceService.addLocalMediaStream(stream);
+            var blobUrl = _this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
+            _this.LocalStreamUrl = blobUrl;
+            _this.conferenceService.joinConference(_this.Context);
+            _this.inConference = true;
+        }, function (err) {
+            console.log("getUserMedia error", err);
+        });
     };
     ConferenceComponent = __decorate([
         core_1.Component({
@@ -71,7 +82,7 @@ var ConferenceComponent = (function () {
             selector: 'conference',
             templateUrl: 'conference.component.html',
         }), 
-        __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizer])
+        __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizer, router_1.ActivatedRoute])
     ], ConferenceComponent);
     return ConferenceComponent;
 }());
