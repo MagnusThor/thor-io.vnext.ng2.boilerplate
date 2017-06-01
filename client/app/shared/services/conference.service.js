@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var thor_io_connection_provider_1 = require('../../providers/thor-io.connection.provider');
+var thor_io_client_vnext_1 = require('thor-io.client-vnext');
 var models_1 = require('../../../../shared/models');
 var platform_browser_1 = require('@angular/platform-browser');
 var http_1 = require('@angular/http');
@@ -34,7 +35,7 @@ var ConferenceService = (function () {
             ]
         };
         // add your own STUN / turn servers ..
-        this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
+        this.rtc = new thor_io_client_vnext_1.ThorIOClient.WebRTC(this.proxy, config);
         // limit video and audio
         this.rtc.setBandwithConstraints(500, 50);
         this.rtc.OnRemoteStream = function (stream) {

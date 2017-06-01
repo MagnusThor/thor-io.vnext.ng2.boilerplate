@@ -1,4 +1,5 @@
 "use strict";
+var thor_io_client_vnext_1 = require('thor-io.client-vnext');
 var ConnectionProviderError = (function () {
     function ConnectionProviderError(error) {
         this.timeStamp = new Date();
@@ -12,7 +13,7 @@ var ConnectionProvider = (function () {
         var _this = this;
         this.errors = new Array();
         //todo: controller array configurable
-        this.factory = new ThorIO.Client.Factory(location.origin.replace(/^http/, 'ws'), ["contextBroker"]);
+        this.factory = new thor_io_client_vnext_1.ThorIOClient.Factory(location.origin.replace(/^http/, 'ws'), ["contextBroker"]);
         this.factory.OnOpen = function (brokerProxy) {
             _this.isConnected = true;
             brokerProxy.Connect();

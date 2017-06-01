@@ -1,3 +1,5 @@
+import {ThorIOClient} from 'thor-io.client-vnext';
+
 export class ConnectionProviderError
 {
         timeStamp: Date;
@@ -10,7 +12,7 @@ export class ConnectionProviderError
 }
 
 export class ConnectionProvider {
-    private factory: ThorIO.Client.Factory;
+    private factory: ThorIOClient.Factory;
     public isConnected: boolean;
 
     public errors: Array<ConnectionProviderError>;
@@ -19,8 +21,10 @@ export class ConnectionProvider {
     {
         this.errors = new Array<ConnectionProviderError>();
         //todo: controller array configurable
-        this.factory  = new ThorIO.Client.Factory(location.origin.replace(/^http/, 'ws'),["contextBroker"]);
-        this.factory.OnOpen = (brokerProxy:ThorIO.Client.Proxy) =>{
+      
+        this.factory  = new ThorIOClient.Factory(location.origin.replace(/^http/, 'ws')
+        ,["contextBroker"]);
+        this.factory.OnOpen = (brokerProxy:ThorIOClient.Proxy) =>{
                 this.isConnected = true;
                 brokerProxy.Connect();
         };

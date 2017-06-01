@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ConnectionProvider} from '../../providers/thor-io.connection.provider'
+import {ThorIOClient} from 'thor-io.client-vnext'
 import {Signal, PeerConnection, InstantMessage, Participant} from '../../../../shared/models'
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import { Http, Response, Jsonp,Headers,RequestOptions } from '@angular/http';
@@ -13,11 +14,11 @@ import 'rxjs/add/operator/catch';
 export class ConferenceService {
 
 
-    private rtc: ThorIO.Client.WebRTC;
+    private rtc: ThorIOClient.WebRTC;
 
     public RemoteStreams: Array<Participant>;
     public InstantMessages: Array<InstantMessage>;
-    private proxy: ThorIO.Client.Proxy;
+    private proxy: ThorIOClient.Proxy;
 
     public context: string;
 
@@ -36,7 +37,7 @@ export class ConferenceService {
         };
         // add your own STUN / turn servers ..
 
-        this.rtc = new ThorIO.Client.WebRTC(this.proxy, config);
+        this.rtc = new ThorIOClient.WebRTC(this.proxy, config);
 
         // limit video and audio
 
