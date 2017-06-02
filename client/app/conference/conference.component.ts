@@ -52,25 +52,25 @@ export class ConferenceComponent {
         this.InstantMessage = new InstantMessage();
 
         this.route.params.subscribe((params: Params) => {
-        
+
             if (!params.hasOwnProperty("slug")) {
                 this.conferenceService.getSlug().subscribe((randomSlug: string) => {
                     this.Context = randomSlug;
-                      this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug
+                    this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug
 
                 });
             } else {
                 this.Context = params["slug"].toString();
                 this.actionButtonCaption = "JOIN";
-                  this.ContextUrl = "https://" + location.host + "/#/join/" + this.Context; 
+                this.ContextUrl = "https://" + location.host + "/#/join/" + this.Context;
 
             }
 
-          
+
             this.Participants = new Array<Participant>();
 
-          
-           
+
+
 
             this.Participants = this.conferenceService.RemoteStreams;
             this.InstantMessages = this.conferenceService.InstantMessages;
@@ -78,7 +78,7 @@ export class ConferenceComponent {
             this.conferenceService.onParticipant = (participant: Participant) => {
                 this.MainVideoUrl = participant.url;
             }
-           
+
 
         });
 
@@ -93,19 +93,19 @@ export class ConferenceComponent {
     }
 
     joinConference() {
-              navigator.getUserMedia({ audio: true, video: true }, (stream: MediaStream) => {
-                    this.conferenceService.addLocalMediaStream(stream);
-                    let blobUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-                    this.LocalStreamUrl = blobUrl;
-                    this.conferenceService.joinConference(this.Context);
-                    this.inConference = true;
-                }, (err) => {
+        navigator.getUserMedia({ audio: true, video: true }, (stream: MediaStream) => {
+            this.conferenceService.addLocalMediaStream(stream);
+            let blobUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
+            this.LocalStreamUrl = blobUrl;
+            this.conferenceService.joinConference(this.Context);
+            this.inConference = true;
+        }, (err) => {
 
-                    console.log("getUserMedia error", err);
-                });
+            console.log("getUserMedia error", err);
+        });
 
-          
-       
+
+
     }
 
 

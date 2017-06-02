@@ -43,6 +43,12 @@ export class ConferenceService {
 
         this.rtc.setBandwithConstraints(500,50);
 
+        this.rtc.OnContextCreated= () => {
+
+        }
+
+        this.rtc.OnLocalStream = () => {}
+
         this.rtc.OnRemoteStream = (stream: MediaStream) => {
             let safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             let participant = new Participant(stream,

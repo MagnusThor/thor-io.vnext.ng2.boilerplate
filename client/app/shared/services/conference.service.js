@@ -38,6 +38,9 @@ var ConferenceService = (function () {
         this.rtc = new thor_io_client_vnext_1.ThorIOClient.WebRTC(this.proxy, config);
         // limit video and audio
         this.rtc.setBandwithConstraints(500, 50);
+        this.rtc.OnContextCreated = function () {
+        };
+        this.rtc.OnLocalStream = function () { };
         this.rtc.OnRemoteStream = function (stream) {
             var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
             var participant = new models_1.Participant(stream, safeUrl, stream.id);

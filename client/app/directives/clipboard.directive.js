@@ -18,7 +18,6 @@ var ClipboardDirective = (function () {
     }
     ClipboardDirective.prototype.ngOnInit = function () {
         var _this = this;
-        console.log("!");
         var option;
         option = !!this.targetElm ? { target: function () { return _this.targetElm; } } : { text: function () { return _this.cbContent; } };
         this.clipboard = new Clipboard(this.elmRef.nativeElement, option);

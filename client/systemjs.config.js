@@ -9,7 +9,7 @@
     '@angular': 'lib/@angular',
     'rxjs': 'lib/rxjs',
     'shared': 'shared',
-    'thor-io.client-vnext':'script/client.js',
+    'thor-io.client-vnext':'lib/thor-io.client-vnext/ThorIOClient.js',
     'clipboard': 'lib/clipboard/dist/clipboard.js',
   };
   // packages tells the System loader how to load when no filename and/or no extension
