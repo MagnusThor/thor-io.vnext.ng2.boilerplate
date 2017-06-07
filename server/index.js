@@ -1,4 +1,4 @@
-var custom =require("../controllers/custom.js");
+var customBroker =require("../controllers/custom.js");
 var express = require("express");
 
 app = express();
@@ -8,7 +8,7 @@ var thorio = require("thor-io.vnext").ThorIO;
 var thorIO = new thorio.Engine(
     [
     thorio.Controllers.BrokerController,
-    custom.ExtendedBrokerontroller
+    customBroker.NeoRTCBrokerController
     ]
 ); // would be nice if we could find ThorIO.Controllers by enum the file system?
 
