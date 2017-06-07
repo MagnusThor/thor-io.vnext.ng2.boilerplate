@@ -1,4 +1,4 @@
-var customBroker =require("../controllers/custom.js");
+var customBroker =require("../controllers/NeoRTCBrokerController.js");
 var express = require("express");
 
 app = express();
