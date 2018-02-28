@@ -1,7 +1,7 @@
 
 <button id="shareUrl" [hidden]="!inConference" ngIIclipboard [cbContent]="ContextUrl">
-    <i class="fa fa-link fa-2x"></i>
-    
+    <i class="fa fa-link"></i>
+    COPY ROOM LINK
 </button>
 
 <div id="hero" [hidden]="inConference">
@@ -18,7 +18,7 @@
     <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
     </div>
     <div id="fullscreen-video">
-        <video id="main-video" muted="muted" [src]="MainVideoUrl || 'http://ui.specbee.com/sample/bird.mp4'" autoplay="autoplay"></video>
+        <video poster="https://storage.googleapis.com/coverr-public/poster/Coverr-Tree_thumb.jpg" id="main-video" muted="muted" [src]="MainVideoUrl || 'https://storage.googleapis.com/coverr-main/mp4/Coverr-Tree.mp4'" autoplay="autoplay"></video>
     </div>
     <div id="videos">
         <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo(stream)"></video>

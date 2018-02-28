@@ -3,6 +3,9 @@
     position: absolute;
     left: 10px;
     top: 10px;
+    font-size: 32px;
+    background: #0bcc0b;
+    color: #fff;
 }
 
 #hero {
@@ -62,6 +65,7 @@ button {
     height: auto;
     padding: 10px;
     font-size: 16px;
+    cursor: pointer;
 }
 
 body,
