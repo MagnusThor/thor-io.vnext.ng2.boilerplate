@@ -18,7 +18,7 @@
     <video id="local" autoplay="autoplay" muted="muted" [src]="LocalStreamUrl"></video>
     </div>
     <div id="fullscreen-video">
-        <video poster="https://storage.googleapis.com/coverr-public/poster/Coverr-Tree_thumb.jpg" id="main-video" muted="muted" [src]="MainVideoUrl || 'https://storage.googleapis.com/coverr-main/mp4/Coverr-Tree.mp4'" autoplay="autoplay"></video>
+        <video loop="loop" poster="https://storage.googleapis.com/coverr-public/poster/Coverr-Tree_thumb.jpg" id="main-video" muted="muted" [src]="MainVideoUrl || 'https://storage.googleapis.com/coverr-main/mp4/Coverr-Tree.mp4'" autoplay="autoplay"></video>
     </div>
     <div id="videos">
         <video *ngFor="let stream of Participants" [src]="stream.url" autoplay="autoplay" (click)="changeMainVideo(stream)"></video>

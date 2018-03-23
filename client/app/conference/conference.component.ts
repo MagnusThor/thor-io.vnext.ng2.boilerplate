@@ -63,9 +63,7 @@ export class ConferenceComponent {
                 this.Context = params["slug"].toString();
                 this.actionButtonCaption = "JOIN";
                 this.ContextUrl = "https://" + location.host + "/#/join/" + this.Context;
-
             }
-
 
             this.Participants = new Array<Participant>();
 
