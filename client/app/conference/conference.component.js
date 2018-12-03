@@ -8,83 +8,81 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var conference_service_1 = require('../shared/services/conference.service');
-var models_1 = require('../../../shared/models');
-var platform_browser_1 = require('@angular/platform-browser');
-var SanitizeUrl = (function () {
-    function SanitizeUrl(_sanitizer) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@angular/core");
+const router_1 = require("@angular/router");
+const conference_service_1 = require("../shared/services/conference.service");
+const models_1 = require("../../../shared/models");
+const platform_browser_1 = require("@angular/platform-browser");
+let SanitizeUrl = class SanitizeUrl {
+    constructor(_sanitizer) {
         this._sanitizer = _sanitizer;
     }
-    SanitizeUrl.prototype.transform = function (v) {
+    transform(v) {
         return this._sanitizer.bypassSecurityTrustUrl(v);
-    };
-    SanitizeUrl = __decorate([
-        core_1.Pipe({
-            name: 'sanitizeUrl'
-        }), 
-        __metadata('design:paramtypes', [platform_browser_1.DomSanitizer])
-    ], SanitizeUrl);
-    return SanitizeUrl;
-}());
-var ConferenceComponent = (function () {
-    function ConferenceComponent(conferenceService, sanitizer, route) {
-        var _this = this;
+    }
+};
+SanitizeUrl = __decorate([
+    core_1.Pipe({
+        name: 'sanitizeUrl'
+    }),
+    __metadata("design:paramtypes", [platform_browser_1.DomSanitizer])
+], SanitizeUrl);
+let ConferenceComponent = class ConferenceComponent {
+    constructor(conferenceService, sanitizer, route) {
         this.conferenceService = conferenceService;
         this.sanitizer = sanitizer;
         this.route = route;
         this.actionButtonCaption = "START";
         this.InstantMessages = new Array();
         this.InstantMessage = new models_1.InstantMessage();
-        this.route.params.subscribe(function (params) {
+        this.route.params.subscribe((params) => {
             if (!params.hasOwnProperty("slug")) {
-                _this.conferenceService.getSlug().subscribe(function (randomSlug) {
-                    _this.Context = randomSlug;
-                    _this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug;
+                this.conferenceService.getSlug().then((randomSlug) => {
+                    this.Context = randomSlug;
+                    this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug;
                 });
             }
             else {
-                _this.Context = params["slug"].toString();
-                _this.actionButtonCaption = "JOIN";
-                _this.ContextUrl = "https://" + location.host + "/#/join/" + _this.Context;
+                this.Context = params["slug"].toString();
+                this.actionButtonCaption = "JOIN";
+                this.ContextUrl = "https://" + location.host + "/#/join/" + this.Context;
             }
-            _this.Participants = new Array();
-            _this.Participants = _this.conferenceService.RemoteStreams;
-            _this.InstantMessages = _this.conferenceService.InstantMessages;
-            _this.conferenceService.onParticipant = function (participant) {
-                _this.MainVideoUrl = participant.url;
+            this.Participants = new Array();
+            this.Participants = this.conferenceService.RemoteStreams;
+            this.InstantMessages = this.conferenceService.InstantMessages;
+            this.conferenceService.onParticipant = (participant) => {
+                this.MainVideoUrl = participant.url;
             };
         });
     }
-    ConferenceComponent.prototype.sendIM = function () {
+    sendIM() {
         this.conferenceService.sendInstantMessage(this.InstantMessage);
         this.InstantMessage.text = "";
-    };
-    ConferenceComponent.prototype.changeMainVideo = function (participant) {
+    }
+    changeMainVideo(participant) {
         this.MainVideoUrl = participant.url;
-    };
-    ConferenceComponent.prototype.joinConference = function () {
-        var _this = this;
-        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
-            _this.conferenceService.addLocalMediaStream(stream);
-            var blobUrl = _this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-            _this.LocalStreamUrl = blobUrl;
-            _this.conferenceService.joinConference(_this.Context);
-            _this.inConference = true;
-        }, function (err) {
+    }
+    joinConference() {
+        navigator.getUserMedia({ audio: true, video: true }, (stream) => {
+            this.conferenceService.addLocalMediaStream(stream);
+            let blobUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
+            this.LocalStreamUrl = blobUrl;
+            this.conferenceService.joinConference(this.Context);
+            this.inConference = true;
+        }, (err) => {
             console.log("getUserMedia error", err);
         });
-    };
-    ConferenceComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'conference',
-            templateUrl: 'conference.component.html',
-        }), 
-        __metadata('design:paramtypes', [conference_service_1.ConferenceService, platform_browser_1.DomSanitizer, router_1.ActivatedRoute])
-    ], ConferenceComponent);
-    return ConferenceComponent;
-}());
+    }
+};
+ConferenceComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'conference',
+        templateUrl: 'conference.component.html',
+    }),
+    __metadata("design:paramtypes", [conference_service_1.ConferenceService, platform_browser_1.DomSanitizer,
+        router_1.ActivatedRoute])
+], ConferenceComponent);
 exports.ConferenceComponent = ConferenceComponent;
 //# sourceMappingURL=conference.component.js.map

@@ -2,7 +2,9 @@ var customBroker =require("../controllers/NeoRTCBrokerController.js");
 var express = require("express");
 
 app = express();
- 
+
+require("express-ws")(app);
+
 var thorio = require("thor-io.vnext").ThorIO;
 
 var thorIO = new thorio.Engine(
@@ -12,13 +14,10 @@ var thorIO = new thorio.Engine(
     ]
 ); // would be nice if we could find ThorIO.Controllers by enum the file system?
 
-var expressWs = require("express-ws")(app);
 
-app.use("/", express.static("client"));
-app.use("/app", express.static("client"));
+app.use("/", express.static("dist"));
+app.use("/client", express.static("client"));
 
-app.use("/shared", express.static("shared")); 
-app.use("/lib", express.static("node_modules")); 
 
 app.ws("/", function (ws, req) {    
        thorIO.addWebSocket(ws,req);

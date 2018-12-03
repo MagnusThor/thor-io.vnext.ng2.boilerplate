@@ -8,25 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var thor_io_connection_provider_1 = require('../../providers/thor-io.connection.provider');
-var thor_io_client_vnext_1 = require('thor-io.client-vnext');
-var models_1 = require('../../../../shared/models');
-var platform_browser_1 = require('@angular/platform-browser');
-var http_1 = require('@angular/http');
-require('rxjs/add/observable/throw');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
-var ConferenceService = (function () {
-    function ConferenceService(connProvider, sanitizer, http) {
-        var _this = this;
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@angular/core");
+const thor_io_connection_provider_1 = require("../../providers/thor-io.connection.provider");
+const thor_io_client_vnext_1 = require("thor-io.client-vnext");
+const models_1 = require("../../../../shared/models");
+const platform_browser_1 = require("@angular/platform-browser");
+const http_1 = require("@angular/http");
+// import 'rxjs/add/observable/throw';
+// import 'rxjs/add/operator/map'; 
+// import 'rxjs/add/operator/catch';
+let ConferenceService = class ConferenceService {
+    constructor(connProvider, sanitizer, http) {
         this.connProvider = connProvider;
         this.sanitizer = sanitizer;
         this.http = http;
         this.proxy = connProvider.getProxy("contextBroker");
         this.RemoteStreams = new Array();
         this.InstantMessages = new Array();
-        var config = {
+        let config = {
             iceTransports: 'all',
             iceServers: [
                 {
@@ -38,60 +38,66 @@ var ConferenceService = (function () {
         this.rtc = new thor_io_client_vnext_1.ThorIOClient.WebRTC(this.proxy, config);
         // limit video and audio
         this.rtc.setBandwithConstraints(500, 50);
-        this.rtc.OnContextCreated = function () {
+        this.rtc.OnContextCreated = () => {
         };
-        this.rtc.OnLocalStream = function () { };
-        this.rtc.OnRemoteStream = function (stream) {
-            var safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
-            var participant = new models_1.Participant(stream, safeUrl, stream.id);
-            _this.onParticipant(participant);
-            _this.RemoteStreams.push(participant);
+        this.rtc.OnLocalStream = () => { };
+        this.rtc.OnRemoteStream = (stream) => {
+            let safeUrl = sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(stream));
+            let participant = new models_1.Participant(stream, safeUrl, stream.id);
+            this.onParticipant(participant);
+            this.RemoteStreams.push(participant);
         };
-        this.rtc.OnRemoteStreamlost = function (streamId, peerId) {
-            var remoteStream = _this.findMediaStream(streamId);
-            _this.RemoteStreams.splice(_this.RemoteStreams.indexOf(remoteStream), 1);
+        this.rtc.OnRemoteStreamlost = (streamId, peerId) => {
+            var remoteStream = this.findMediaStream(streamId);
+            this.RemoteStreams.splice(this.RemoteStreams.indexOf(remoteStream), 1);
         };
-        this.rtc.OnContextChanged = function (context) {
-            _this.context = context;
-            _this.rtc.ConnectContext();
+        this.rtc.OnContextChanged = (context) => {
+            this.context = context;
+            this.rtc.ConnectContext();
         };
-        this.proxy.On("instantMessage", function (message) {
-            _this.InstantMessages.unshift(message);
+        this.proxy.On("instantMessage", (message) => {
+            this.InstantMessages.unshift(message);
         });
     }
-    ConferenceService.prototype.onParticipant = function (participant) {
-    };
-    ConferenceService.prototype.getSlug = function () {
-        return this.http.get("/data/slugs.json").map(function (res) {
-            var slugs = res.json();
+    onParticipant(participant) {
+    }
+    getSlug() {
+        let req = this.http.get("/client/data/slugs.json");
+        let slugs = req.toPromise().then((resp) => {
+            let slugs = resp.json();
             return slugs[Math.floor(Math.random() * slugs.length)].toString().toLowerCase();
         });
-    };
-    ConferenceService.prototype.joinConference = function (context) {
+        // return this.http.get("/data/slugs.json"
+        // ).map( (res:Response) => {
+        //        let slugs = res.json();
+        //        return slugs[Math.floor(Math.random() * slugs.length) ].toString().toLowerCase();
+        // });
+        return slugs;
+    }
+    joinConference(context) {
         this.proxy.Invoke("changeContext", { context: context });
-    };
-    ConferenceService.prototype.findMediaStream = function (streamId) {
-        var match = this.RemoteStreams.find(function (pre) {
+    }
+    findMediaStream(streamId) {
+        var match = this.RemoteStreams.filter((pre) => {
             return pre.id === streamId;
-        });
+        })[0];
         return match;
-    };
-    ConferenceService.prototype.addLocalMediaStream = function (stream) {
+    }
+    addLocalMediaStream(stream) {
         this.rtc.AddLocalStream(stream);
-    };
+    }
     ;
-    ConferenceService.prototype.connectContext = function (context) {
+    connectContext(context) {
         this.proxy.Invoke("connectContext", { context: context });
-    };
-    ConferenceService.prototype.sendInstantMessage = function (instantMessage) {
+    }
+    sendInstantMessage(instantMessage) {
         instantMessage.timeStamp = new Date();
         this.proxy.Invoke("instantMessage", instantMessage);
-    };
-    ConferenceService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [thor_io_connection_provider_1.ConnectionProvider, platform_browser_1.DomSanitizer, http_1.Http])
-    ], ConferenceService);
-    return ConferenceService;
-}());
+    }
+};
+ConferenceService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [thor_io_connection_provider_1.ConnectionProvider, platform_browser_1.DomSanitizer, http_1.Http])
+], ConferenceService);
 exports.ConferenceService = ConferenceService;
 //# sourceMappingURL=conference.service.js.map

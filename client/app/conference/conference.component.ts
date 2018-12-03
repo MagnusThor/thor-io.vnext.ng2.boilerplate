@@ -54,20 +54,16 @@ export class ConferenceComponent {
         this.route.params.subscribe((params: Params) => {
 
             if (!params.hasOwnProperty("slug")) {
-                this.conferenceService.getSlug().subscribe((randomSlug: string) => {
+                this.conferenceService.getSlug().then((randomSlug: string) => {
                     this.Context = randomSlug;
                     this.ContextUrl = "https://" + location.host + "/#/join/" + randomSlug
-
                 });
             } else {
                 this.Context = params["slug"].toString();
                 this.actionButtonCaption = "JOIN";
                 this.ContextUrl = "https://" + location.host + "/#/join/" + this.Context;
             }
-
             this.Participants = new Array<Participant>();
-
-
 
 
             this.Participants = this.conferenceService.RemoteStreams;

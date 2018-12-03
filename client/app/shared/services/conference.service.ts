@@ -4,11 +4,9 @@ import {ThorIOClient} from 'thor-io.client-vnext'
 import {Signal, PeerConnection, InstantMessage, Participant} from '../../../../shared/models'
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import { Http, Response, Jsonp,Headers,RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map'; 
-import 'rxjs/add/operator/catch';
+// import 'rxjs/add/observable/throw';
+// import 'rxjs/add/operator/map'; 
+// import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ConferenceService {
@@ -76,14 +74,22 @@ export class ConferenceService {
     public onParticipant(participant: Participant) {
     }
 
-    getSlug():Observable<string>{
+    getSlug():Promise<string>{
        
-        return this.http.get("/data/slugs.json"
-       
-        ).map( (res:Response) => {
-               let slugs = res.json();
-               return slugs[Math.floor(Math.random() * slugs.length) ].toString().toLowerCase();
+        let req = this.http.get("/client/data/slugs.json");
+
+        
+        let slugs  = req.toPromise().then( (resp:Response) => {
+            let slugs  = resp.json();
+             return slugs[Math.floor(Math.random() * slugs.length) ].toString().toLowerCase()
         });
+        
+        // return this.http.get("/data/slugs.json"
+        // ).map( (res:Response) => {
+        //        let slugs = res.json();
+        //        return slugs[Math.floor(Math.random() * slugs.length) ].toString().toLowerCase();
+        // });
+        return slugs;
     }
 
     joinConference(context: string) {
@@ -91,10 +97,9 @@ export class ConferenceService {
     }
 
     findMediaStream(streamId: string): Participant {
-        var match = this.RemoteStreams.find((pre: Participant) => {
+        var match = this.RemoteStreams.filter( (pre: Participant) => {
             return pre.id === streamId;
-        });
-      
+        })[0];
         return match;
     }
 

@@ -1,7 +1,6 @@
 import {Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy  } from '@angular/core';
 import Clipboard = require('clipboard');
 
-
 @Directive({
     selector: '[ngIIclipboard]'
 })
@@ -15,17 +14,14 @@ export class ClipboardDirective implements OnInit, OnDestroy {
     @Output('cbOnSuccess') onSuccess: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Output('cbOnError') onError: EventEmitter<boolean> = new EventEmitter<boolean>();
-
     constructor(private elmRef: ElementRef) { }
-
     ngOnInit() {
-        let option: ClipboardOptions;
+        let option: any;
         option = !!this.targetElm ? { target: () => <any>this.targetElm } : { text: () => this.cbContent };
         this.clipboard = new Clipboard(this.elmRef.nativeElement, option);
         this.clipboard.on('success', (e) => this.onSuccess.emit(true));
         this.clipboard.on('error', (e) => this.onError.emit(true));
     }
-
     ngOnDestroy() {
         !!this.clipboard && this.clipboard.destroy();
     }
