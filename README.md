@@ -1,5 +1,18 @@
 # thor-io.vnext.ng2.boilerplate  ( + webrtc demo )
 
+## Important notice
+
+This example / boilerplare project is *depracted*, *obselete* due to a new project  fresh,up-to date one provided by Belys Invest, have a look at https://github.com/Belys/kollokvium - Simple WebRTC video conference example based on thor-io.vnext and its WebRTC libraries.
+
+Note it's not an AngularJS based example, more like a plain-vanilla JavaScript ( typescript ) one.   We recon you can use that to implement an Angular based solution , if you just certain pieces of this example, but we will not keep maintain this paricular repository.
+
+Kollokvium uses Thor-IO server,client and WebRTC libraries  version 2.x beta. 
+
+
+
+
+
+
 ## About
 
 This example is based Dan Wahlins angular2 jump start found on  https://github.com/DanWahlin/Angular2-JumpStart 
